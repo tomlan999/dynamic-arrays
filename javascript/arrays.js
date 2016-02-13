@@ -17,7 +17,6 @@ imageListA[14] = "images/drawing/thumbs/artwork_15.jpg";
 imageListA[15] = "images/drawing/thumbs/artwork_16.jpg";
 imageListA[16] = "images/drawing/thumbs/artwork_17.jpg";
 
-//Oil color art
 var imageListB = [];
 imageListB[0] = "images/oil/thumbs/artwork_1.jpg";
 imageListB[1] = "images/oil/thumbs/artwork_2.jpg";
@@ -29,7 +28,6 @@ imageListB[6] = "images/oil/thumbs/artwork_7.jpg";
 imageListB[7] = "images/oil/thumbs/artwork_8.jpg";
 
 
-//Water color art
 var imageListC = [];
 imageListC[0] = "images/watercolor/thumbs/artwork_1.jpg";
 imageListC[1] = "images/watercolor/thumbs/artwork_2.jpg";
@@ -50,14 +48,10 @@ function buildThumbnails()
 	
 	//create an output variable
 	var output = "";
-	//first part: counter (we set up 0 to start counting the loop)
-	//second part: condition, (the loop will keep looping as long as the condition is true)
-	//third part: incrementor - adds one to the counter AFTER the code is executed in the brackets
-  
+	  
     output += '<div class="thumbs_block">';
 	for(var i=0; i < imageListA.length; i++)
 	{
-		//concatenation assignment operator..
 		output += '<img src="' + imageListA[i] + '" />';
 	}
     output += '</div>';
@@ -65,7 +59,6 @@ function buildThumbnails()
     output += '<div class="thumbs_block">';
 	for(var j=0; j < imageListB.length; j++)
 	{
-		//concatenation assignment operator..
 		output += '<img src="' + imageListB[j] + '" />';
 	}
     output += '</div>';
@@ -73,59 +66,49 @@ function buildThumbnails()
     output += '<div class="thumbs_block">';
 	for(var k=0; k < imageListC.length; k++)
 	{
-		//concatenation assignment operator..
 		output += '<img src="' + imageListC[k] + '" />';
 	}
     output += '</div>';
   
 	thumbsDiv.innerHTML = output;
 	
-}
+};
 
 window.onload = function()
 {
-	buildThumbnails();//use or "fire off" this function
-	//or invoke the function
+	buildThumbnails();
 };
 
-var myThumbDiv = document.getElementById("thumbs");
-//variables IN functions (function scope), can see global varibles)
+var myThumbDiv = document.getElementById("thumbs"); //hook onto the thumbs div
 
-//create a new array to hold the purchased images
-var purchasedImages = [];
+var purchasedImages = []; //create a new array to hold the purchased images
 
-// attach a click event to the DIV with id="thumbs" - when someone clicks thumbs, fire function onImageClick
-myThumbDiv.addEventListener("click", onImageClick, false);
+myThumbDiv.addEventListener("click", onImageClick, false); // when someone clicks the DIV with id="thumbs", fire function onImageClick
 
 // create the function referenced in the function handler onImageClick
 function onImageClick(evt)
 {
-  // we only want the src attribute of the image so we need to the the src attribute of the img tag we click on
-  var onlyPath = evt.target.getAttribute("src");
+
+  var onlyPath = evt.target.getAttribute("src"); //get the src attribute of the clicked image
     
-  // the indexOf array method searches for a match in the array and if it finds the data, it returns the index position in the array
-  var imageIndex = imageListA.indexOf(onlyPath);
-  //console.log(imageIndex);
+  var imageIndex = imageListA.indexOf(onlyPath); //search the array for the src attribute in onlyPath and return the index position of the clicked image
   
-  // remove the element clicked on from imageListA array and save the image path to a variable so we can use it later
-  var selectedImage = imageListA.splice(imageIndex, 1);
-  //console.log(selectedImage);
- 
-  // add this image path to the purchasedImage array
+  if(imageIndex != -1) {
+    var selectedImage = imageListA.splice(imageIndex, 1);   // remove the element clicked on from imageListA array and save the image path to the variable selectedImage
+
+    purchasedImages.push(selectedImage); // add clicked image to purchased array
   
-  purchasedImages.push(selectedImage); // add purchased image to purchased array
-  update_shopping_cart(); // run function to build teh shopping cart div with purchased image
+  };
+  update_shopping_cart(); // run function to build the shopping cart div with purchased images
+  
   buildThumbnails(); // rerun buildThumbnails function to update the thumbs div without the image that was moved to the shopping cart
   
-  function update_shopping_cart()
+  function update_shopping_cart() //build the shopping cart div
   {
-    // make a shortcut to the div id="shopping_cart_div"
     var cart = document.getElementById("shopping_cart_div");
     
-    // create an output variable so we can build it up over the following lines
     var output = "";
     
-    // create a for loop
     for(var i=0; i <= purchasedImages.length -1; i++)
     {
       output += '<img src="' + purchasedImages[i] + '"width="70" height="50" />';
@@ -135,4 +118,4 @@ function onImageClick(evt)
   
   }
   
-}
+};
